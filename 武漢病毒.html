@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      html,
+      body {
+        height: 100%;
+        background: url(./肺炎國旗.gif) no-repeat center center/cover;
+        text-align: center;
+      }
+      #game {
+        width: 1000px;
+        height: 750px;
+        background: rgba(0, 0, 0, 0.5);
+        position: relative;
+        overflow: hidden;
+        cursor: url(./WuHanVarius.png) 32 32, auto;
+        margin: auto;
+      }
+      .game {
+        width: 400px;
+        margin: auto;
+        transform: translateY(10%);
+      }
+      #game img {
+        position: absolute;
+        height: 150px;
+      }
+      .hue {
+        filter: hue-rotate(200deg);
+      }
+      h1 {
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>
+      <img src="./WuHanVarius.gif" width="30" /> 消灭特朗普
+      <img src="./WuHanVarius.gif" width="30" />
+    </h1>
+    <div id="game"></div>
+    <div class="game">
+      <input type="button" value="开始游戏" id="btn-start" />
+      <p>分数: <span id="text-score">0</span>分</p>
+      <p>剩馀: <span id="text-time">30</span>秒</p>
+    </div>
+    <audio src="义勇军行进曲.mp3" id="bgm"></audio>
+    <script src="jquery-3.5.1.min.js"></script>
+    <script>
+      let score = 0;
+      let timeleft = 30;
+      const bgm = $("#bgm")[0];
+      console.log(bgm);
+
+      let dasabi = 0;
+
+      const rand = (num) => {
+        return Math.floor(Math.random() * num);
+      };
+
+      $("#btn-start").click(function () {
+        $("#btn-start").attr("disable", true);
+        bgm.play();
+
+        score = 0;
+        $("#text-score").text(score);
+        timeleft = 30;
+        $("#text-time").text(timeleft);
+
+        let timmer = setInterval(function () {
+          timeleft--;
+          $("#text-time").text(timeleft);
+
+          if (timeleft == 0) {
+            clearInterval(timmer);
+            $(this).attr("disabled", false);
+            $("#game img").remove();
+            bgm.pause();
+            bgm.currentTime = 0;
+            setTimeout(() => {
+              alert("中国武汉肺炎让全世界知道了东亚病夫的厉害");
+            }, 50);
+          } else {
+            if (rand(10) >= 5) {
+              $("#game").append(`<img src="./川普.gif" id="dasabi${dasabi}">`);
+              movedasabi(dasabi);
+              dasabi++;
+            } else if (rand(10) <= 3) {
+              $("#game").append(`<img src="./Dasabi.gif" id="dasabi${dasabi}" class="sabiXi">`);
+              movedasabi(dasabi);
+              dasabi++;
+            } else if (rand(10) == 0 || rnad(10) == 10) {
+              $("#game").append(`<img src="./川普.gif" id="dasabi${dasabi}" class="hue">`);
+              movedasabi(dasabi);
+              dasabi++;
+            }
+          }
+        }, 1000);
+      });
+
+      const movedasabi = (dasabi) => {
+        $(`#dasabi${dasabi}`).animate(
+          {
+            left: rand(70) + "%",
+            top: rand(70) + "%",
+          },
+          3000,
+          function () {
+            movedasabi(dasabi);
+          }
+        );
+      };
+
+      $("#game").on("click", "img", function () {
+        if ($(this).attr("class") === "sabiXi") {
+          $(this).attr("src", "./dasabi.png");
+          $(this).stop(true, false);
+          $(this).fadeOut(500);
+          score--;
+          $("#text-score").text(score);
+        } else if ($(this).attr("class") === "hue") {
+          $(this).attr("src", "./三普.png");
+          $(this).stop(true, false);
+          $(this).fadeOut(500);
+          score += 50;
+          $("#text-score").text(score);
+        } else {
+          $(this).attr("src", "./三普.png");
+          $(this).stop(true, false);
+          $(this).fadeOut(500);
+          score++;
+          $("#text-score").text(score);
+        }
+      });
+    </script>
+  </body>
+</html>
