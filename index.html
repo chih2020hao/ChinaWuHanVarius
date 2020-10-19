@@ -49,6 +49,7 @@
       <p>剩馀: <span id="text-time">30</span>秒</p>
     </div>
     <audio src="义勇军行进曲.mp3" id="bgm"></audio>
+    <audio src="dasabi.mp3" id="sabi"></audio>
     <script src="jquery-3.5.1.min.js"></script>
     <script>
       let score = 0;
@@ -118,6 +119,7 @@
       $("#game").on("click", "img", function () {
         if ($(this).attr("class") === "sabiXi") {
           $(this).attr("src", "./dasabi.png");
+          $("#sabi")[0].play();
           $(this).stop(true, false);
           $(this).fadeOut(500);
           score--;
